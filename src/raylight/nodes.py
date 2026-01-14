@@ -1,6 +1,7 @@
 import raylight
 import os
 import gc
+import time
 from typing import Any
 from pathlib import Path
 from copy import deepcopy
@@ -329,6 +330,10 @@ class RayUNETLoader:
     FUNCTION = "load_ray_unet"
 
     CATEGORY = "Raylight"
+
+    @classmethod
+    def IS_CHANGED(cls, **kwargs):
+        return time.monotonic_ns()
 
     def load_ray_unet(self, ray_actors_init, unet_name, weight_dtype, lora=None):
         ray_actors, gpu_actors, parallel_dict = ensure_fresh_actors(ray_actors_init)
