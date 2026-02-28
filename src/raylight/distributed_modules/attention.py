@@ -3,7 +3,6 @@ from xfuser.core.long_ctx_attention import (
 )
 
 from yunchang.kernels import AttnType
-from .sageattention_hf_patch import ensure_hf_fp8_cuda_kernel, ensure_hf_sm90_kernel
 
 _ATTN_TYPE = None
 _SYNC_ULYSSES = None
@@ -36,10 +35,6 @@ def get_sync_ulysses():
 def make_xfuser_attention(attn_type, sync_ulysses):
     print(f"Using XFuser {attn_type} attention, Sync Ulysses: {sync_ulysses}")
     attn = AttnType[attn_type]
-    if attn_type == "SAGE_FP8_CUDA":
-        ensure_hf_fp8_cuda_kernel()
-    elif attn_type == "SAGE_FP8_SM90":
-        ensure_hf_sm90_kernel
 
     xfuser_attn = xFuserLongContextAttention(use_sync=sync_ulysses, attn_type=attn)
 
@@ -106,4 +101,3 @@ def make_xfuser_attention(attn_type, sync_ulysses):
         return out
 
     return _attention_xfuser_unmask
-
